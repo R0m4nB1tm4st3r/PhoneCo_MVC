@@ -16,8 +16,8 @@ public class PhoneModel implements IPhoneModel {
     private final int NUMBER_TEXT_WIDTH = 20;
 
     private LinkedList<IPhoneView> Views = new LinkedList<>();
-    private char[] messageText = new char[MESSAGE_TEXT_WIDTH];
-    private char[] numberText = new char[NUMBER_TEXT_WIDTH];
+    private String messageText = ""; // new char[MESSAGE_TEXT_WIDTH];
+    private String numberText = ""; // new char[NUMBER_TEXT_WIDTH];
     private int messageTextIndex = 0;
     private int numberTextIndex = 0;
     private LinkedList<Draft> DraftList = new LinkedList<>();
@@ -50,6 +50,33 @@ public class PhoneModel implements IPhoneModel {
         currentState.HandleState(actionCommand, this);
 
         NotifyViews();
+    }
+
+    @Override
+    public IPhoneState GetState() {
+        return currentState;
+    }
+
+    @Override
+    public String GetMessage() {
+        return messageText;
+    }
+
+    @Override
+    public String GetNumber() {
+        return numberText;
+    }
+
+    @Override
+    public void ClearMessage() {
+        messageText = "";
+        messageTextIndex = 0;
+    }
+
+    @Override
+    public void ClearNumber() {
+        numberText = "";
+        numberTextIndex = 0;
     }
 
     public void HandleButtonClickTimer(String actionCommand) {
@@ -99,13 +126,15 @@ public class PhoneModel implements IPhoneModel {
 
     public void AppendNumber(char number) {
         if(numberTextIndex != NUMBER_TEXT_WIDTH) {
-            numberText[numberTextIndex++] = number;
+            numberText += number;
+            numberTextIndex++;
         }
     }
 
     public void AppendMessageCharacter(char character) {
         if(messageTextIndex != MESSAGE_TEXT_WIDTH) {
-            messageText[messageTextIndex++] = character;
+            messageText += character;
+            messageTextIndex++;
         }
     }
 }

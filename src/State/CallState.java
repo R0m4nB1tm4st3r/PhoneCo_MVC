@@ -1,10 +1,11 @@
 package State;
 
 import Model.IPhoneModel;
+import Model.PhoneModel;
 
-public class CallState implements IPhoneState {
+public class CallState extends IPhoneState {
     @Override
-    public void HandleState(String command, IPhoneModel context) {
+    public void HandleState(String command, PhoneModel context) {
 
     }
 }

@@ -2,6 +2,7 @@ package View;
 
 import Controller.IPhoneController;
 import Enumerations.ButtonTag;
+import Enumerations.StateTag;
 import Model.IPhoneModel;
 
 import javax.swing.*;
@@ -162,9 +163,22 @@ public class PhoneViewOld implements IPhoneView {
 
     @Override
     public void UpdateView() {
-        // txtScreen.append("sth happened");
-        // txtScreen.replaceRange("a", 0, 1);
-        ChangeTextScreenVisibility(true);
+        StateTag tempTag = this.phoneModel.GetState().GetStateTag();
+
+        if(tempTag == StateTag.HOME_STATE) {
+            txtScreen.setText("");
+            ChangeTextScreenVisibility(false);
+        }
+        else if(tempTag == StateTag.ENTER_NUMBER_STATE) {
+            ChangeTextScreenVisibility(true);
+            txtScreen.setText(phoneModel.GetNumber());
+        }
+        else if(tempTag == StateTag.CALL_STATE) {
+
+        }
+        else if(tempTag == StateTag.MESSAGE_STATE) {
+
+        }
     }
 
     private void ChangeTextScreenVisibility(boolean visibilityRequest) {
