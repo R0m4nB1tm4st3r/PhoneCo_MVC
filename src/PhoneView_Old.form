@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="PhoneView_Old">
+  <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="207" height="459"/>
+    </constraints>
+    <properties>
+      <background color="-14603989"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <component id="cc8de" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
+        <constraints border-constraint="North"/>
+        <properties>
+          <autoscrolls value="true"/>
+          <background color="-393473"/>
+          <columns value="16"/>
+          <margin top="40" left="0" bottom="0" right="0"/>
+          <rows value="10"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
