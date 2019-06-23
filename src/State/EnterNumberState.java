@@ -30,12 +30,9 @@ public class EnterNumberState extends IPhoneState {
         else {
             if(command == ButtonTag.PHONE.name()) {
                 context.currentState = new CallState();
-                context.currentState.HandleState(command, context);
-                context.ClearNumber();
             }
             else if(command == ButtonTag.HANGUP.name()) {
                 context.currentState = new HomeState();
-                context.currentState.HandleState(command, context);
                 context.ClearNumber();
             }
         }

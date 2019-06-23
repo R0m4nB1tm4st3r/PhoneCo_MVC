@@ -80,7 +80,7 @@ public class PhoneViewOld implements IPhoneView {
 
     private void ConfigureTextScreen() {
         txtScreen = new JTextArea(10, 16);
-        txtScreen.setFont(new Font("SansSerif", Font.BOLD, 20));
+        txtScreen.setFont(new Font("SansSerif", Font.BOLD, 30));
         txtScreen.setEditable(false);
         txtScreen.setLineWrap(true);
     }
@@ -174,7 +174,7 @@ public class PhoneViewOld implements IPhoneView {
             txtScreen.setText(phoneModel.GetNumber());
         }
         else if(tempTag == StateTag.CALL_STATE) {
-
+            txtScreen.setText("Calling " + phoneModel.GetNumber() + "...");
         }
         else if(tempTag == StateTag.MESSAGE_STATE) {
 
