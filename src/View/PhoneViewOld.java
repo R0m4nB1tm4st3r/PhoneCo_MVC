@@ -177,7 +177,7 @@ public class PhoneViewOld implements IPhoneView {
             txtScreen.setText("Calling " + phoneModel.GetNumber() + "...");
         }
         else if(tempTag == StateTag.MESSAGE_STATE) {
-
+            txtScreen.setText(phoneModel.GetMessage());
         }
     }
 

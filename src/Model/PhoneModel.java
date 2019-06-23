@@ -16,17 +16,11 @@ public class PhoneModel implements IPhoneModel {
     private final int NUMBER_TEXT_WIDTH = 20;
 
     private LinkedList<IPhoneView> Views = new LinkedList<>();
-    private String messageText = ""; // new char[MESSAGE_TEXT_WIDTH];
-    private String numberText = ""; // new char[NUMBER_TEXT_WIDTH];
+    private String messageText = "";
+    private String numberText = "";
     private int messageTextIndex = 0;
     private int numberTextIndex = 0;
     private LinkedList<Draft> DraftList = new LinkedList<>();
-
-    private int buttonClicked = 0;
-    private String lastButtonClicked = "";
-    private Timer buttonClickTimer = new Timer("ButtonClickTimer", false);
-    private TimerTask buttonClickTask;
-    private boolean timerRunning = false;
 
     public PhoneModel() {
         currentState = new HomeState();
@@ -79,51 +73,6 @@ public class PhoneModel implements IPhoneModel {
         numberTextIndex = 0;
     }
 
-    public void HandleButtonClickTimer(String actionCommand) {
-        buttonClickTask = new TimerTask() {
-            @Override
-            public void run() {
-                System.out.println("Timeout!!");
-                System.out.println("You clicked the same button " + buttonClicked + " times.");
-                buttonClicked = 1;
-                AbortTimer();
-            }
-        };
-
-        if((lastButtonClicked == actionCommand) && timerRunning) {
-            ResetTimer();
-            buttonClicked++;
-        }
-        else {
-            buttonClicked = 1;
-            lastButtonClicked = actionCommand;
-
-            if(timerRunning) {
-                ResetTimer();
-
-            }
-            else {
-                buttonClickTimer.schedule(buttonClickTask, 1000);
-                timerRunning = true;
-            }
-        }
-
-        System.out.println(actionCommand);
-    }
-
-    private void ResetTimer() {
-        AbortTimer();
-        buttonClickTimer.schedule(buttonClickTask, 1000);
-        timerRunning = true;
-    }
-
-    private void AbortTimer() {
-        buttonClickTimer.cancel();
-        buttonClickTimer = new Timer("ButtonClickTimer");
-
-        timerRunning = false;
-    }
-
     public void AppendNumber(char number) {
         if(numberTextIndex != NUMBER_TEXT_WIDTH) {
             numberText += number;
@@ -136,5 +85,9 @@ public class PhoneModel implements IPhoneModel {
             messageText += character;
             messageTextIndex++;
         }
+    }
+
+    public void ReplaceLastCharacter(char character) {
+        messageText = messageText.substring(0, messageText.length() - 1) + character;
     }
 }

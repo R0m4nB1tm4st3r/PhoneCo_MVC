@@ -20,10 +20,11 @@ public class EnterNumberState extends IPhoneState {
 
     @Override
     public void HandleState(String command, PhoneModel context) {
-        if(!(command == ButtonTag.PHONE.name() || command == ButtonTag.HANGUP.name())) {
+        if(!(command == ButtonTag.PHONE.name() || command == ButtonTag.HANGUP.name() || command == ButtonTag.STAR.name())) {
             for(int i = 0; i < 10; i++) {
                 if(command == ValidEntryCommands[i]) {
                     context.AppendNumber(NumberKeys.charAt(i));
+                    break;
                 }
             }
         }
@@ -34,6 +35,9 @@ public class EnterNumberState extends IPhoneState {
             else if(command == ButtonTag.HANGUP.name()) {
                 context.currentState = new HomeState();
                 context.ClearNumber();
+            }
+            else if(command == ButtonTag.STAR.name()) {
+                context.currentState = new MessageState();
             }
         }
     }
