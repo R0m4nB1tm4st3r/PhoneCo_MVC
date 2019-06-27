@@ -62,6 +62,7 @@ public class PhoneViewOld implements IPhoneView {
 
         frame.pack();
         frame.setVisible(true);
+        frame.setResizable(false);
     }
 
     private void ConfigureScreen() {
@@ -70,7 +71,7 @@ public class PhoneViewOld implements IPhoneView {
         screenPanel.setLayout(new GridLayout(1,1));
 
         Image screenBackgroundImage = new ImageIcon(getClass().getResource("/Chromatic color background, backgrounds textures.jpg")).getImage();
-        ImageIcon screenBackgroundIcon = new ImageIcon(screenBackgroundImage.getScaledInstance(400, 400, Image.SCALE_FAST));
+        ImageIcon screenBackgroundIcon = new ImageIcon(screenBackgroundImage.getScaledInstance(500, 500, Image.SCALE_FAST));
         screenBackground = new JLabel();
         screenBackground.setIcon(screenBackgroundIcon);
         screenPanel.add(screenBackground);
@@ -193,19 +194,6 @@ public class PhoneViewOld implements IPhoneView {
             isTxtScreenVisible = false;
         }
         screenPanel.repaint();
-    }
-}
-
-class ButtonClick implements ActionListener {
-    IPhoneController theController;
-
-    public ButtonClick(IPhoneController controller) {
-        this.theController = controller;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        this.theController.UpdateModel(e.getActionCommand());
     }
 }
 

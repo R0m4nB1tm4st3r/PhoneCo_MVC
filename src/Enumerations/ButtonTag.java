@@ -14,5 +14,9 @@ public enum ButtonTag {
     NINE,
     STAR,
     ZERO,
-    HASH
+    HASH,
+    ACTION,
+    SHIFT,
+    SEND,
+    DRAFT
 }

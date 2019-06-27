@@ -11,12 +11,15 @@ public class HomeState extends IPhoneState {
 
     @Override
     public void HandleState(String command, PhoneModel context) {
-        if(!(   command == ButtonTag.PHONE.name() ||
-                command == ButtonTag.HANGUP.name() ||
-                command == ButtonTag.HASH.name() ||
-                command == ButtonTag.STAR.name())   ) {
+        if(!(   command.equals(ButtonTag.PHONE.name()) ||
+                command.equals(ButtonTag.HANGUP.name()) ||
+                command.equals(ButtonTag.HASH.name()) ||
+                command.equals(ButtonTag.STAR.name()) )) {
             context.currentState = new EnterNumberState();
-            context.currentState.HandleState(command, context);
+
+            if(!command.equals(ButtonTag.ACTION.name())) {
+                context.currentState.HandleState(command, context);
+            }
         }
     }
 }

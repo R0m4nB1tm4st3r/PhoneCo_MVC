@@ -12,7 +12,7 @@ public class CallState extends IPhoneState {
 
     @Override
     public void HandleState(String command, PhoneModel context) {
-        if(command == ButtonTag.HANGUP.name()) {
+        if(command.equals(ButtonTag.HANGUP.name())) {
             context.currentState = new HomeState();
             context.ClearNumber();
         }

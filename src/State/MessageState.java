@@ -1,13 +1,16 @@
 package State;
 
 import Controller.PhoneController;
+import Draft.Draft;
 import Enumerations.ButtonTag;
 import Enumerations.StateTag;
 import Model.IPhoneModel;
 import Model.PhoneModel;
 
+import java.awt.*;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class MessageState extends IPhoneState {
     private final String[] ValidEntryCommands;
@@ -34,9 +37,14 @@ public class MessageState extends IPhoneState {
 
     @Override
     public void HandleState(String command, PhoneModel context) {
-        if(!(command == ButtonTag.PHONE.name() || command == ButtonTag.HANGUP.name() || command == ButtonTag.HASH.name())) {
+        if(!(   command.equals(ButtonTag.PHONE.name()) || command.equals(ButtonTag.HANGUP.name()) || command.equals(ButtonTag.HASH.name()) ||
+                command.equals(ButtonTag.SHIFT.name()) || command.equals(ButtonTag.DRAFT.name()) || command.equals(ButtonTag.SEND.name()) || command.equals(ButtonTag.ACTION.name()))) {
             for(int i = 0; i < 11; i++) {
-                if(command == ValidEntryCommands[i]) {
+                if(command.equals(ValidEntryCommands[i])) {
+                    if(!(lastButtonClicked.equals(command))) {
+                        characterIndex = 0;
+                    }
+
                     if(isUpperCase) {
                         HandleButtonClickTimer(command, UpperCaseCharacters[i].charAt(characterIndex), context);
                     }
@@ -47,17 +55,55 @@ public class MessageState extends IPhoneState {
                     break;
                 }
             }
+
+            if(command.length() == 1) {
+                if (isUpperCase) {
+                    context.AppendMessageCharacter(command.charAt(0));
+                } else {
+                    context.AppendMessageCharacter(command.toLowerCase().charAt(0));
+                }
+            }
         }
         else {
-            if(command == ButtonTag.PHONE.name()) {
-                context.currentState = new HomeState();
-                context.ClearNumber();
+            if(command.equals(ButtonTag.PHONE.name()) || command.equals(ButtonTag.SEND.name())) {
+                context.PrintSendingMessage();
+                context.DeleteDraft(context.GetNumber());
+
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        context.currentState = new HomeState();
+                        context.ClearMessage();
+                        context.ClearNumber();
+                        context.NotifyViews();
+                    }
+                }, 1000);
             }
-            else if(command == ButtonTag.HANGUP.name()) {
-                context.currentState = new HomeState();
+            else if(command.equals(ButtonTag.HANGUP.name()) || command.equals(ButtonTag.DRAFT.name())) {
+                if(currentLoadedDraft == null) {
+                    context.SaveDraft(new Draft(context.GetMessage(), context.GetNumber()));
+                }
+                else {
+                    currentLoadedDraft.ChangeMessage(context.GetMessage());
+                }
+                context.PrintSavingDraftMessage();
+
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        context.currentState = new HomeState();
+                        context.ClearMessage();
+                        context.ClearNumber();
+                        context.NotifyViews();
+                    }
+                }, 1000);
             }
-            else if(command == ButtonTag.HASH.name()) {
+            else if(command.equals(ButtonTag.HASH.name()) || command.equals(ButtonTag.SHIFT.name())) {
                 isUpperCase = !isUpperCase;
+            }
+            else if(command.equals(ButtonTag.ACTION.name())) {
+                context.DeleteDraft(context.GetNumber());
+                context.ClearMessage();
             }
         }
     }
@@ -74,7 +120,7 @@ public class MessageState extends IPhoneState {
             }
         };
 
-        if((lastButtonClicked == actionCommand) && timerRunning) {  // if clicked more than one time
+        if((lastButtonClicked.equals(actionCommand)) && timerRunning) {  // if clicked more than one time
             ResetTimer();
             buttonClicked++;
 
@@ -83,6 +129,7 @@ public class MessageState extends IPhoneState {
         else {                                                      // if clicked first
             buttonClicked = 1;
             lastButtonClicked = actionCommand;
+            characterIndex = 0;
 
             context.AppendMessageCharacter(character);
 

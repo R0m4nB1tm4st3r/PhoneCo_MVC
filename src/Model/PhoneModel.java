@@ -90,4 +90,34 @@ public class PhoneModel implements IPhoneModel {
     public void ReplaceLastCharacter(char character) {
         messageText = messageText.substring(0, messageText.length() - 1) + character;
     }
+
+    public void PrintSendingMessage() {
+        messageText = "Sending...";
+    }
+
+    public void PrintSavingDraftMessage() {
+        messageText = "Saving Draft...";
+    }
+
+    public void SaveDraft(Draft d) {
+        DraftList.add(d);
+    }
+
+    public Draft LoadFromDraftList(String number) {
+        for(Draft d : DraftList) {
+            if(number.equals(d.GetNumber())) {
+                messageText = d.GetMessage();
+                return d;
+            }
+        }
+        return null;
+    }
+
+    public void DeleteDraft(String number) {
+        for(Draft d : DraftList) {
+            if(number.equals(d.GetNumber())) {
+                DraftList.remove(d);
+            }
+        }
+    }
 }
